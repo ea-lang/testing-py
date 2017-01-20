@@ -15,15 +15,17 @@ class PartyTests(unittest.TestCase):
         self.assertIn("I'm having a party", result.data)
 
     def test_no_rsvp_yet(self):
-        # FIXME: Add a test to show we haven't RSVP'd yet
-        print "FIXME"
+        result = self.client.get("/")
+        self.assertIn("Oooh! I want to come!", result.data)
+        self.assertNotIn("Party Details", result.data)
 
     def test_rsvp(self):
         result = self.client.post("/rsvp",
                                   data={'name': "Jane", 'email': "jane@jane.com"},
                                   follow_redirects=True)
-        # FIXME: check that once we log in we see party details--but not the form!
-        print "FIXME"
+        self.assertIn("Party Details", result.data)
+        self.assertNotIn("Oooh! I want to come!", result.data)
+
 
     def test_rsvp_mel(self):
         # FIXME: write a test that mel can't invite himself
